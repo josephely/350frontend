@@ -1,15 +1,26 @@
-const data = null;
+function getSuggestions () {
+  var data = {};
+  const request = new XMLHttpRequest();
 
-const xhr = new XMLHttpRequest();
-xhr.withCredentials = true;
+  request.addEventListener('readystatechange', () => {
+      //console.log(request, request.readyState)
+      if(request.readyState === 4) {
+          data = JSON.parse(request.responseText);
+      }
+  });
+  request.open('GET', 'http://107.21.61.106:8000/securitysuggestions');
+  request.send();
+  return data;
+}
 
-xhr.addEventListener("readystatechange", function () {
-  if (this.readyState === this.DONE) {
-    //console.log(this.responseText);
-    document.getElementById("first").innerHTML = this.responseText;
-  }
-});
+let data = getSuggestions();
+console.log(data[0].suggestionbody);
 
-xhr.open("GET", "http://107.21.61.106:8000/users");
-
-xhr.send(data);
+/*
+let text  = "";
+for (let x in data) {
+      //console.log(data[x].suggestionbody);
+    text = text + '<li class="list-group-item">' + data[x].suggestionbody + '</li>';
+}
+document.getElementById("list").innerHTML = text;
+*/
