@@ -17,6 +17,8 @@ function createUser() {
         "name": document.getElementById('nameInput').value
       });
 
+      console.log(data);
+
       
       const xhr = new XMLHttpRequest();
       xhr.withCredentials = true;
@@ -24,6 +26,7 @@ function createUser() {
       xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
           console.log(this.responseText);
+          location.replace("survey.html");
         }
       });
       
@@ -33,13 +36,44 @@ function createUser() {
       
       xhr.send(data);
       
-      location.replace("survey.html");
+      //location.replace("survey.html");
       
 }
 
-function myBoy() {
-  console.log("we are in the boy");
+function loginUser () {
+
+
+  const data = JSON.stringify({
+    "email": document.getElementById('emailLogin').value,
+    "password": document.getElementById('passwordLogin').value
+  });
+
+  //console.log(data);
+
+  const xhr = new XMLHttpRequest();
+  xhr.withCredentials = true;
+  
+  xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === this.DONE) {
+      console.log(this.responseText);
+      if (this.status == 403) {
+        alert("Incorrect username or password");
+      }
+      else {
+        location.replace("survey.html");
+      }
+    }
+  });
+
+  xhr.open("POST", "http://107.21.61.106:8000/rpc/login");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  
+  xhr.send(data);
+
+  
+ 
 }
+
 
 /*
 
